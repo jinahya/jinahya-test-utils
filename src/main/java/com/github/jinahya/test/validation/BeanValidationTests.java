@@ -21,7 +21,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @author Jin Kwon &lt;onacit_at_gmail.com&gt;
  */
-public final class BeanValidationTestUtils {
+public final class BeanValidationTests {
 
     // -----------------------------------------------------------------------------------------------------------------
 //    public static final ValidatorFactory VALIDATION_FACTORY = Validation.buildDefaultValidatorFactory();
@@ -38,12 +38,25 @@ public final class BeanValidationTestUtils {
         return configuration;
     }
 
-    public static final ValidatorFactory VALIDATION_FACTORY
+    /**
+     * An instance of {@link ValidatorFactory} to be used in testing.
+     * @see Validation#byDefaultProvider()
+     */
+    public static final ValidatorFactory TEST_VALIDATION_FACTORY
             = messageInterpolator(Validation.byDefaultProvider().configure()).buildValidatorFactory();
 
     // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Applies an instance of {@link Validator} created from {@link #TEST_VALIDATION_FACTORY} to specified function and
+     * returns the result.
+     *
+     * @param function the function to be applied.
+     * @param <R>      result type parameter
+     * @return the result of the function.
+     */
     public static <R> R applyValidator(final Function<? super Validator, ? extends R> function) {
-        return requireNonNull(function, "function is null").apply(VALIDATION_FACTORY.getValidator());
+        return requireNonNull(function, "function is null").apply(TEST_VALIDATION_FACTORY.getValidator());
     }
 
     public static <U, R> R applyValidator(final BiFunction<? super Validator, ? super U, ? extends R> function,
@@ -79,17 +92,42 @@ public final class BeanValidationTestUtils {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Validates specified bean.
+     *
+     * @param object the bean to be validated; must be not {@code null}.
+     * @param <T>    bean type parameter
+     * @return a set of constraint violations; {@code empty} if valid.
+     */
     public static <T> Set<ConstraintViolation<T>> validate(final T object) {
-        return applyValidator(v -> v.validate(requireNonNull(object, "object is null")));
+        if (object == null) {
+            throw new NullPointerException("object is null");
+        }
+        return applyValidator(v -> v.validate(object));
     }
 
+    /**
+     * Checks whether specified bean is valid.
+     *
+     * @param object the bean to be checked.
+     * @return {@code true} if {@code object} is {@code null} or the result of {@link #validate(Object)} method with
+     * {@code object} is empty.
+     */
     public static boolean isValid(final Object object) {
         if (object == null) {
             return true;
         }
-        return validate(requireNonNull(object, "object is null")).isEmpty();
+        return validate(object).isEmpty();
     }
 
+    /**
+     * Checks whether specified is valid and throws a constraint violation exception if not.
+     *
+     * @param object the bean to be validated; may be {@code null}.
+     * @param <T>    bean type parameter
+     * @return specified bean.
+     */
     public static <T> T requireValid(final T object) {
         if (object == null) {
             return null;
@@ -102,7 +140,11 @@ public final class BeanValidationTestUtils {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    private BeanValidationTestUtils() {
+
+    /**
+     * Creates a new instance.
+     */
+    private BeanValidationTests() {
         super();
     }
 }

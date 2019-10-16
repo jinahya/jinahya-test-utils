@@ -1,6 +1,5 @@
 package com.github.jinahya.test.jackson;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,11 +13,11 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.github.jinahya.test.lang.ClassTestUtils.applyResourceStream;
-import static com.github.jinahya.test.validation.BeanValidationTestUtils.requireValid;
+import static com.github.jinahya.test.lang.ResourceTests.applyResourceStream;
+import static com.github.jinahya.test.validation.BeanValidationTests.requireValid;
 
 @Slf4j
-public class JacksonTestUtils {
+public final class JacksonTests {
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -26,10 +25,6 @@ public class JacksonTestUtils {
      * A shared instance of object mapper.
      */
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper(); // fully thread-safe!
-
-    static {
-        OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
     public static <R> R applyObjectMapper(final Function<? super ObjectMapper, ? extends R> function) {
@@ -115,7 +110,7 @@ public class JacksonTestUtils {
     /**
      * Creates a new instance.
      */
-    private JacksonTestUtils() {
+    private JacksonTests() {
         super();
     }
 }
