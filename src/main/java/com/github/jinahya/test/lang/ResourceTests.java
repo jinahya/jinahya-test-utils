@@ -1,5 +1,7 @@
 package com.github.jinahya.test.lang;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.BiConsumer;
@@ -8,6 +10,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+@Slf4j
 public final class ResourceTests {
 
     // -----------------------------------------------------------------------------------------------------------------

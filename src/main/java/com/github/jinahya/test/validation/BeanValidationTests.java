@@ -1,5 +1,7 @@
 package com.github.jinahya.test.validation;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -21,6 +23,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @author Jin Kwon &lt;onacit_at_gmail.com&gt;
  */
+@Slf4j
 public final class BeanValidationTests {
 
     // -----------------------------------------------------------------------------------------------------------------
