@@ -49,59 +49,63 @@ public final class JacksonTests {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    public static JsonNode readTreeFromResource(final String resourceName) throws IOException {
-        return applyResourceStream(
-                resourceName,
-                s -> applyObjectMapper(m -> {
-                    try {
-                        return m.readTree(s);
-                    } catch (final IOException ioe) {
-                        throw new RuntimeException(ioe);
-                    }
-                })
+    public static JsonNode readTreeFromResource(final ClassLoader classLoader, final String resourceName)
+            throws IOException {
+        return applyResourceStream(classLoader,
+                                   resourceName,
+                                   s -> applyObjectMapper(m -> {
+                                       try {
+                                           return m.readTree(s);
+                                       } catch (final IOException ioe) {
+                                           throw new RuntimeException(ioe);
+                                       }
+                                   })
         );
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    public static <T> T readValueFromResource(final String resourceName, final Class<? extends T> valueClass)
+    public static <T> T readValueFromResource(final ClassLoader classLoader, final String resourceName,
+                                              final Class<? extends T> valueClass)
             throws IOException {
-        return applyResourceStream(
-                resourceName,
-                s -> applyObjectMapper(m -> {
-                    try {
-                        return requireValid(m.readValue(s, valueClass));
-                    } catch (final IOException ioe) {
-                        throw new RuntimeException(ioe);
-                    }
-                })
+        return applyResourceStream(classLoader,
+                                   resourceName,
+                                   s -> applyObjectMapper(m -> {
+                                       try {
+                                           return requireValid(m.readValue(s, valueClass));
+                                       } catch (final IOException ioe) {
+                                           throw new RuntimeException(ioe);
+                                       }
+                                   })
         );
     }
 
-    public static <T> T readValueFromResource(final String resourceName, final JavaType javaType)
+    public static <T> T readValueFromResource(final ClassLoader classLoader, final String resourceName,
+                                              final JavaType javaType)
             throws IOException {
-        return applyResourceStream(
-                resourceName,
-                s -> applyObjectMapper(m -> {
-                    try {
-                        return requireValid(OBJECT_MAPPER.readValue(s, javaType));
-                    } catch (final IOException ioe) {
-                        throw new RuntimeException(ioe);
-                    }
-                })
+        return applyResourceStream(classLoader,
+                                   resourceName,
+                                   s -> applyObjectMapper(m -> {
+                                       try {
+                                           return requireValid(OBJECT_MAPPER.readValue(s, javaType));
+                                       } catch (final IOException ioe) {
+                                           throw new RuntimeException(ioe);
+                                       }
+                                   })
         );
     }
 
-    public static <T> T readValueFromResource(final String resourceName, final TypeReference<? extends T> typeReference)
+    public static <T> T readValueFromResource(final ClassLoader classLoader, final String resourceName,
+                                              final TypeReference<? extends T> typeReference)
             throws IOException {
-        return applyResourceStream(
-                resourceName,
-                s -> applyObjectMapper(m -> {
-                    try {
-                        return requireValid(m.readValue(s, typeReference));
-                    } catch (final IOException ioe) {
-                        throw new RuntimeException(ioe);
-                    }
-                })
+        return applyResourceStream(classLoader,
+                                   resourceName,
+                                   s -> applyObjectMapper(m -> {
+                                       try {
+                                           return requireValid(m.readValue(s, typeReference));
+                                       } catch (final IOException ioe) {
+                                           throw new RuntimeException(ioe);
+                                       }
+                                   })
         );
     }
 
