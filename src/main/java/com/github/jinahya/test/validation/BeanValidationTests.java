@@ -43,6 +43,7 @@ public final class BeanValidationTests {
 
     /**
      * An instance of {@link ValidatorFactory} to be used in testing.
+     *
      * @see Validation#byDefaultProvider()
      */
     public static final ValidatorFactory TEST_VALIDATION_FACTORY
@@ -125,11 +126,12 @@ public final class BeanValidationTests {
     }
 
     /**
-     * Checks whether specified is valid and throws a constraint violation exception if not.
+     * Checks that the specified bean is valid.
      *
-     * @param object the bean to be validated; may be {@code null}.
+     * @param object the bean to be validated; may be {@code null} which is considered as valid.
      * @param <T>    bean type parameter
      * @return specified bean.
+     * @throws ConstraintViolationException if the bean is not valid.
      */
     public static <T> T requireValid(final T object) {
         if (object == null) {

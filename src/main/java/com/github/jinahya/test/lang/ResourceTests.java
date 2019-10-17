@@ -18,7 +18,7 @@ public final class ResourceTests {
     /**
      * Applies a stream of specified resource to specified function and returns the result.
      *
-     * @param loader a class loader for reading resource.
+     * @param loader   a class loader for reading resource.
      * @param name     the resource name to open.
      * @param function the function to be applied with the resource stream.
      * @param <R>      result type parameter.
