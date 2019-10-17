@@ -1,6 +1,7 @@
 package com.github.jinahya.test.fasterxml.jackson;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,11 +10,15 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static com.github.jinahya.test.fasterxml.jackson.JacksonTests.acceptObjectMapper;
+import static com.github.jinahya.test.fasterxml.jackson.JacksonTests.acceptPrettyPrinter;
 import static com.github.jinahya.test.fasterxml.jackson.JacksonTests.applyObjectMapper;
+import static com.github.jinahya.test.fasterxml.jackson.JacksonTests.applyPrettyPrinter;
+import static com.github.jinahya.test.fasterxml.jackson.JacksonTests.printPrettyStringToSystemOut;
 import static com.github.jinahya.test.fasterxml.jackson.JacksonTests.readTreeFromResource;
 import static com.github.jinahya.test.fasterxml.jackson.JacksonTests.readValueFromResource;
 import static com.github.jinahya.test.lang.ResourceTests.acceptResourceStream;
 import static com.github.jinahya.test.lang.ResourceTests.applyResourceStream;
+import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -141,5 +146,24 @@ public class JacksonTestsTest {
             assertNotNull(value);
             assertEquals("unknown", value.name);
         }
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    @Test
+    public void testApplyPrettyPrinter() {
+        final ObjectWriter prettyPrinter = applyPrettyPrinter((p, u) -> p, () -> null);
+        assertNotNull(prettyPrinter);
+    }
+
+    @Test
+    public void testAcceptPrettyPrinter() {
+        acceptPrettyPrinter((p, u) -> assertNotNull(p), () -> null);
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    @Test
+    public void testPrettyPrintStreamToSystemOut() {
+        printPrettyStringToSystemOut(asList("a", "b", "c"));
+        printPrettyStringToSystemOut(new TheObject());
     }
 }

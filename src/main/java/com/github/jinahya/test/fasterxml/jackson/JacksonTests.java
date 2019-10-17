@@ -32,15 +32,24 @@ public final class JacksonTests {
 
     // -----------------------------------------------------------------------------------------------------------------
     public static <R> R applyObjectMapper(final Function<? super ObjectMapper, ? extends R> function) {
-        return function.apply(TEST_OBJECT_MAPPER);
+        return requireNonNull(function, "function is null").apply(TEST_OBJECT_MAPPER);
     }
 
     public static <U, R> R applyObjectMapper(final BiFunction<? super ObjectMapper, ? super U, ? extends R> function,
                                              final Supplier<? extends U> supplier) {
+        if (function == null) {
+            throw new NullPointerException("function is null");
+        }
+        if (supplier == null) {
+            throw new NullPointerException("supplier is null");
+        }
         return applyObjectMapper(v -> function.apply(v, supplier.get()));
     }
 
     public static void acceptObjectMapper(final Consumer<? super ObjectMapper> consumer) {
+        if (consumer == null) {
+            throw new NullPointerException("consumer is null");
+        }
         applyObjectMapper(v -> {
             consumer.accept(v);
             return null;
@@ -49,6 +58,12 @@ public final class JacksonTests {
 
     public static <U> void acceptObjectMapper(final BiConsumer<? super ObjectMapper, ? super U> consumer,
                                               final Supplier<? extends U> supplier) {
+        if (consumer == null) {
+            throw new NullPointerException("consumer is null");
+        }
+        if (supplier == null) {
+            throw new NullPointerException("supplier is null");
+        }
         acceptObjectMapper(v -> consumer.accept(v, supplier.get()));
     }
 
@@ -71,6 +86,9 @@ public final class JacksonTests {
     public static <T> T readValueFromResource(final ClassLoader classLoader, final String resourceName,
                                               final Class<? extends T> valueClass)
             throws IOException {
+        if (valueClass == null) {
+            throw new NullPointerException("valueClass is null");
+        }
         return applyResourceStream(classLoader,
                                    resourceName,
                                    s -> applyObjectMapper(m -> {
@@ -86,6 +104,9 @@ public final class JacksonTests {
     public static <T> T readValueFromResource(final ClassLoader classLoader, final String resourceName,
                                               final JavaType javaType)
             throws IOException {
+        if (javaType == null) {
+            throw new NullPointerException("javaType is null");
+        }
         return applyResourceStream(classLoader,
                                    resourceName,
                                    s -> applyObjectMapper(m -> {
@@ -101,6 +122,9 @@ public final class JacksonTests {
     public static <T> T readValueFromResource(final ClassLoader classLoader, final String resourceName,
                                               final TypeReference<? extends T> typeReference)
             throws IOException {
+        if (typeReference == null) {
+            throw new NullPointerException("typeReference is null");
+        }
         return applyResourceStream(classLoader,
                                    resourceName,
                                    s -> applyObjectMapper(m -> {
@@ -142,8 +166,8 @@ public final class JacksonTests {
         });
     }
 
-    public static <U> void acceptPrintPrinter(final BiConsumer<? super ObjectWriter, ? super U> consumer,
-                                              final Supplier<? extends U> supplier) {
+    public static <U> void acceptPrettyPrinter(final BiConsumer<? super ObjectWriter, ? super U> consumer,
+                                               final Supplier<? extends U> supplier) {
         if (consumer == null) {
             throw new NullPointerException("consumer is null");
         }
